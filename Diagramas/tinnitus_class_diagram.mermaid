@@ -1,0 +1,71 @@
+classDiagram
+    class TherapyConfig {
+        -frequency: number
+        -duration: number
+        -interval: number
+        -technique: string
+        -ttsText: string
+        -panning: number
+        -volume: number
+        -lowpassFreq: number
+        -highpassFreq: number
+        +constructor()
+        +update(param, value)
+    }
+
+    class AudioSynthesizer {
+        -ctx: AudioContext
+        +constructor(audioContext)
+        +createPureTone(frequency, duration, startTime)
+        +createACRN(baseFreq, duration, startTime)
+        +createWhiteNoise(duration, startTime)
+        +speakText(text)
+    }
+
+    class AudioProcessor {
+        -ctx: AudioContext
+        -panner: StereoPannerNode
+        -lowpassFilter: BiquadFilterNode
+        -highpassFilter: BiquadFilterNode
+        -masterGain: GainNode
+        +constructor(audioContext)
+        -setupProcessingChain()
+        +connectSource(sourceNode)
+        +updateSpatial(panValue)
+        +updateVolume(volume)
+        +updateLowpass(freq)
+        +updateHighpass(freq)
+    }
+
+    class SessionManager {
+        -isRunning: boolean
+        -isPaused: boolean
+        -startTime: number
+        -pauseTime: number
+        -elapsedTime: number
+        -stimuliCount: number
+        -timerInterval: number
+        -audioContext: AudioContext
+        -synthesizer: AudioSynthesizer
+        -processor: AudioProcessor
+        -config: TherapyConfig
+        -sequenceTimeout: number
+        +constructor()
+        +initialize()
+        +start()
+        +pause()
+        +resume()
+        +stop()
+        -playSequence()
+        -startTimer()
+        -stopTimer()
+        -updateStats()
+        -updateUI(status)
+    }
+
+    SessionManager "1" *-- "1" TherapyConfig : contém
+    SessionManager "1" *-- "1" AudioSynthesizer : usa
+    SessionManager "1" *-- "1" AudioProcessor : usa
+    SessionManager "1" --> "1" AudioContext : gerencia
+    AudioSynthesizer "1" --> "1" AudioContext : utiliza
+    AudioProcessor "1" --> "1" AudioContext : utiliza

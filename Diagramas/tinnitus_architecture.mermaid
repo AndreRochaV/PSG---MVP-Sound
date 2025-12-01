@@ -1,0 +1,48 @@
+graph TB
+    subgraph Interface["CAMADA DE INTERFACE"]
+        Config[Configurações de Terapia]
+        Config --> Freq[Frequências dos Tons]
+        Config --> Dur[Durações dos Estímulos]
+        Config --> Inter[Intervalos entre Estímulos]
+        Config --> Text[Textos para TTS]
+        Config --> Pos[Posições Espaciais]
+        Config --> EQ[Parâmetros de EQ]
+    end
+
+    subgraph Sintese["CAMADA DE SÍNTESE"]
+        Osc[Osciladores Digitais<br/>Ondas Senoidais ACRN]
+        TTS[Motor TTS Nativo<br/>Síntese Vocal]
+        Audio[Áudios Pré-produzidos]
+
+        TTS --> TTS_Params[Velocidade/Pitch/Volume]
+    end
+
+    subgraph Processamento["⚙️ CAMADA DE PROCESSAMENTO"]
+        Espacial[Espacialização 3D]
+        Espacial --> IID[Diferença Interaural<br/>de Intensidade]
+        Espacial --> ITD[Diferença Interaural<br/>de Tempo]
+
+        Equalizacao[Equalização Espectral]
+        Equalizacao --> Filtros[Filtros Passa-baixa<br/>Passa-alta<br/>Passa-banda]
+    end
+
+    subgraph Reproducao["CAMADA DE REPRODUÇÃO"]
+        Seq[Sequenciador Temporal]
+        Gerenc[Gerenciador de Sessões]
+
+        Gerenc --> Controles[Iniciar/Pausar<br/>Retomar/Finalizar]
+        Gerenc --> Stats[Estatísticas<br/>Tempo/Progresso]
+
+        Seq --> Output[Saída de Áudio<br/>WebAudio API]
+    end
+
+    Interface ==> |Parâmetros| Sintese
+    Sintese ==> |Áudio Bruto| Processamento
+    Processamento ==> |Áudio Processado| Reproducao
+    Reproducao ==> |Execução| Usuario((Usuário))
+
+    style Interface fill:#e1f5ff
+    style Sintese fill:#fff4e1
+    style Processamento fill:#f0e1ff
+    style Reproducao fill:#e1ffe1
+    style Usuario fill:#ffcccb

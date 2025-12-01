@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Teste de síntese</title>
+        <link rel="stylesheet" href="tinnitus-css.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Teste de Síntese</h1>
+            </div>
+
+            <!-- CAMADA DE INTERFACE -->
+            <div class="layer">
+                <h2 class="layer-title">Configurações</h2>
+
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label
+                            >Frequência Base (Hz)
+                            <span class="value-display" id="freqDisplay"
+                                >440</span
+                            ></label
+                        >
+                        <input
+                            type="range"
+                            id="frequency"
+                            min="200"
+                            max="8000"
+                            value="440"
+                            step="10"
+                        />
+                    </div>
+
+                    <div class="control-group">
+                        <label
+                            >Duração do Estímulo (s)
+                            <span class="value-display" id="durDisplay"
+                                >2</span
+                            ></label
+                        >
+                        <input
+                            type="range"
+                            id="duration"
+                            min="0.5"
+                            max="10"
+                            value="2"
+                            step="0.5"
+                        />
+                    </div>
+
+                    <div class="control-group">
+                        <label
+                            >Intervalo entre Estímulos (s)
+                            <span class="value-display" id="intervalDisplay"
+                                >1</span
+                            ></label
+                        >
+                        <input
+                            type="range"
+                            id="interval"
+                            min="0.5"
+                            max="5"
+                            value="1"
+                            step="0.5"
+                        />
+                    </div>
+
+                    <div class="control-group">
+                        <label>Técnica de Terapia</label>
+                        <select id="technique">
+                            <option value="acrn">4 tons harmônicos</option>
+                            <option value="tts">Síntese Vocal (TTS)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Texto para Síntese Vocal (TTS)</label>
+                    <input
+                        type="text"
+                        id="ttsText"
+                        placeholder="Digite o texto para síntese vocal..."
+                    />
+                </div>
+            </div>
+
+            <!-- CAMADA DE PROCESSAMENTO -->
+            <div class="layer">
+                <h2 class="layer-title">Processamento de Áudio</h2>
+
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label
+                            >Espacialização Horizontal
+                            <span class="value-display" id="panDisplay"
+                                >0</span
+                            ></label
+                        >
+                        <input
+                            type="range"
+                            id="panning"
+                            min="-1"
+                            max="1"
+                            value="0"
+                            step="0.1"
+                        />
+                    </div>
+
+                    <div class="control-group">
+                        <label
+                            >Volume
+                            <span class="value-display" id="volumeDisplay"
+                                >50%</span
+                            ></label
+                        >
+                        <input
+                            type="range"
+                            id="volume"
+                            min="0"
+                            max="100"
+                            value="50"
+                        />
+                    </div>
+
+                    <div class="control-group">
+                        <label
+                            >Filtro Passa-Baixa (Hz)
+                            <span class="value-display" id="lpfDisplay"
+                                >5000</span
+                            ></label
+                        >
+                        <input
+                            type="range"
+                            id="lowpass"
+                            min="200"
+                            max="10000"
+                            value="5000"
+                            step="100"
+                        />
+                    </div>
+
+                    <div class="control-group">
+                        <label
+                            >Filtro Passa-Alta (Hz)
+                            <span class="value-display" id="hpfDisplay"
+                                >100</span
+                            ></label
+                        >
+                        <input
+                            type="range"
+                            id="highpass"
+                            min="20"
+                            max="2000"
+                            value="100"
+                            step="10"
+                        />
+                    </div>
+                </div>
+
+                <div class="spatial-visualizer">
+                    <div class="spatial-pointer" id="spatialPointer"></div>
+                </div>
+            </div>
+
+            <!-- CAMADA DE REPRODUÇÃO -->
+            <div class="layer">
+                <h2 class="layer-title">
+                    Controle de Sessão
+                    <span
+                        class="status-indicator status-inactive"
+                        id="statusIndicator"
+                    ></span>
+                </h2>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="startBtn">
+                        ▶ Iniciar Sessão
+                    </button>
+                    <button class="btn btn-secondary" id="pauseBtn" disabled>
+                        ⏸ Pausar
+                    </button>
+                    <button class="btn btn-danger" id="stopBtn" disabled>
+                        ⏹ Parar
+                    </button>
+                </div>
+
+                <div class="stats">
+                    <h3>Estatísticas da Sessão</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="timeElapsed">00:00</div>
+                            <div class="stat-label">Tempo Decorrido</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stimuliCount">0</div>
+                            <div class="stat-label">Estímulos Gerados</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="progressPercent">
+                                0%
+                            </div>
+                            <div class="stat-label">Progresso</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="tinnitus.js"></script>
+    </body>
+</html>
